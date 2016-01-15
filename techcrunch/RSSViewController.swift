@@ -44,13 +44,17 @@ class RSSViewController: UIViewController, UITableViewDataSource, UITableViewDel
         
         self.rssTableView.reloadData()
     }
-    
-    func parseFeedburnerLink(url:String) {
+
+    func parseFeedburnerLink(url:String, completionHandler : ((success : Bool) -> Void)) {
 
         
         self.rssData = NSMutableArray()
         Alamofire.request(.GET, url, parameters: nil).response { (request, response, data, error) in
             let xml = SWXMLHash.parse(data!)
+            
+            if (error != nil) {
+                completionHandler(success: false)
+            }
             
             let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
             dispatch_async(dispatch_get_global_queue(priority, 0)) {
@@ -88,6 +92,8 @@ class RSSViewController: UIViewController, UITableViewDataSource, UITableViewDel
                 
                 
             }
+            completionHandler(success: true)
+            
             
 
         }
@@ -106,7 +112,7 @@ class RSSViewController: UIViewController, UITableViewDataSource, UITableViewDel
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        self.parseFeedburnerLink("http://feeds.feedburner.com/TechCrunch/social?fmt=xml")
+        self.parseFeedburnerLink("http://feeds.feedburner.com/TechCrunch/social?fmt=xml", completionHandler: {(success) -> Void in}) //do nothing, this isn't a background fetch
         self.title = "TechCrunch Social"
     }
     

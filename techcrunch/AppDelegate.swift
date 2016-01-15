@@ -33,11 +33,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             viewControllers = navController.viewControllers as? [UIViewController] {
                 for viewController in viewControllers {
                     if let RSSViewController = viewController as? RSSViewController {
-                        RSSViewController.parseFeedburnerLink("http://feeds.feedburner.com/TechCrunch/social?fmt=xml")
+                        RSSViewController.parseFeedburnerLink("http://feeds.feedburner.com/TechCrunch/social?fmt=xml", completionHandler: { (success) -> Void in
+                            if (success) {
+                                completionHandler(UIBackgroundFetchResult.NewData)
+                            } else {
+                                completionHandler(UIBackgroundFetchResult.Failed)
+                            }
+                                
+                        })
                     }
                 }
         }
-        completionHandler(UIBackgroundFetchResult.NewData)
+        
+        
         
     }
 
