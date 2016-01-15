@@ -11,8 +11,8 @@ import UIKit
 class RSSItem: NSObject {
 
     //assuming that techcrunch will always provide valid input. will have to add handlers if there's possibility of bad data
-    var title: NSString = ""
-    var desc: NSString = ""
+    var title: String = ""
+    var desc: String = ""
     var date: NSDate = NSDate()
 
 }

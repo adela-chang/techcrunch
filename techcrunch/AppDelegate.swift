@@ -26,11 +26,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     //register background fetch
     func application(application: UIApplication, performFetchWithCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-        print("Complete");
+        
+        if let navController = window?.rootViewController as? UINavigationController,
+            viewControllers = navController.viewControllers as? [UIViewController] {
+                for viewController in viewControllers {
+                    if let RSSViewController = viewController as? RSSViewController {
+                        RSSViewController.parseFeedburnerLink("http://feeds.feedburner.com/TechCrunch/social?fmt=xml")
+                    }
+                }
+        }
         completionHandler(UIBackgroundFetchResult.NewData)
-
-        //implement xml parsing of data
-//        getData();
         
     }
 
