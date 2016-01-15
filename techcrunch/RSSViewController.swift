@@ -15,6 +15,7 @@ class RSSTableViewCell : UITableViewCell {
     @IBOutlet weak var title: UILabel!
     @IBOutlet weak var date: UILabel!
     @IBOutlet weak var desc: UILabel!
+    @IBOutlet weak var img: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -46,30 +47,48 @@ class RSSViewController: UIViewController, UITableViewDataSource, UITableViewDel
     
     func parseFeedburnerLink(url:String) {
 
+        
+        self.rssData = NSMutableArray()
         Alamofire.request(.GET, url, parameters: nil).response { (request, response, data, error) in
             let xml = SWXMLHash.parse(data!)
-            for elem in xml["rss"]["channel"]["item"] {
+            
+            let priority = DISPATCH_QUEUE_PRIORITY_DEFAULT
+            dispatch_async(dispatch_get_global_queue(priority, 0)) {
 
-                //parse xml
-                let dateFormatter = NSDateFormatter()
-                dateFormatter.dateFormat = "EEE, d MMM YYYY HH:mm:ss +SSSS"
-                let date = dateFormatter.dateFromString(elem["pubDate"].element!.text!)!
+            //assuming an rss item ALWAYS contains valid data. if not must add error handling
+                for elem in xml["rss"]["channel"]["item"] {
+                
+                    //print("Working on thread: \(NSThread.currentThread()) is main thread: \(NSThread.isMainThread())")
 
-                //remove html tags/encoding from description
-                let desc = elem["description"].element!.text!.stringByDecodingHTMLEntities.stringByStrippingHTMLTags
+                    let imgURL = elem["media:content"][0].element!.attributes["url"]!
+                    
+                    //parse xml
+                    let dateFormatter = NSDateFormatter()
+                    dateFormatter.dateFormat = "EEE, d MMM YYYY HH:mm:ss +SSSS"
+                    let date = dateFormatter.dateFromString(elem["pubDate"].element!.text!)!
+                    
+                    let desc = elem["description"].element!.text!.stringByDecodingHTMLEntities.stringByStrippingHTMLTags
+                    
+                    let item = RSSItem()
+                    item.title = elem["title"].element!.text!
+                    item.date = date
+                    
+                    item.img = UIImage(data: NSData(contentsOfURL:NSURL(string:imgURL)!)!)!
+
+                    //note: using substring bc techcrunch always has 1 extra space in front of its descriptions, and extraneous "Read More" text at the end
+                    item.desc = desc.substringWithRange(Range<String.Index>(start: desc.startIndex.advancedBy(1), end: desc.endIndex.advancedBy(-9)))
+                    self.rssData.addObject(item)
+
+                    dispatch_async(dispatch_get_main_queue()) {
+                        //print("Back to main thread: \(NSThread.currentThread()) is main thread: \(NSThread.isMainThread())")
+                        self.reloadData()
+
+                    }
+                }
                 
-                let item = RSSItem()
-                item.title = elem["title"].element!.text!;
-                item.date = date;
-                
-                //note: using substring bc techcrunch always has an extra space in front of its descriptions, and extraneous "Read More" text at the end
-                item.desc = desc.substringWithRange(Range<String.Index>(start: desc.startIndex.advancedBy(1), end: desc.endIndex.advancedBy(-9)))
-                
-                self.rssData.addObject(item);
-                self.reloadData()
                 
             }
-            print(self.rssData)
+            
 
         }
     }
@@ -87,9 +106,13 @@ class RSSViewController: UIViewController, UITableViewDataSource, UITableViewDel
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        self.configureTableView()
         self.parseFeedburnerLink("http://feeds.feedburner.com/TechCrunch/social?fmt=xml")
         self.title = "TechCrunch Social"
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.configureTableView()
+
     }
     
     override func didReceiveMemoryWarning() {
@@ -101,24 +124,49 @@ class RSSViewController: UIViewController, UITableViewDataSource, UITableViewDel
     //MARK: - Table View Data Source
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
    
-        return rssData.count
+        return self.rssData.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
         
-        let item:RSSItem = rssData[indexPath.row] as! RSSItem
+        let item:RSSItem = self.rssData[indexPath.row] as! RSSItem
         
         let cell = tableView.dequeueReusableCellWithIdentifier("RSSTableViewCell", forIndexPath: indexPath) as! RSSTableViewCell
         
         cell.title.text = item.title
         cell.desc.text = item.desc
+        cell.img.image = item.img
+        
+        if (self.view.traitCollection.horizontalSizeClass == UIUserInterfaceSizeClass.Compact) {
+
+            let aspectRatio = item.img.size.height / item.img.size.width
+            
+            cell.img.removeConstraints(cell.img.constraints) //clear old constraints from dequeuing the cell
+            
+            let constraint:NSLayoutConstraint = NSLayoutConstraint(item: cell.img, attribute: NSLayoutAttribute.Height, relatedBy: NSLayoutRelation.Equal, toItem: cell.img, attribute: NSLayoutAttribute.Width, multiplier: aspectRatio, constant: 0.0)
+            
+            cell.img.addConstraint(constraint)
+            cell.layoutSubviews()
+        }
         
         let dateFormat = NSDateFormatter()
         dateFormat.dateFormat = "hh:mm a | MMMM dd YYYY"
         cell.date.text = dateFormat.stringFromDate(item.date)
-        
+
         return cell
     }
+    
+    //MARK: - Table View Delegate
+//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+//        
+//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//        let vc = storyboard.instantiateViewControllerWithIdentifier("RSSDetailViewController") as! RSSDetailViewController
+//        vc.item = self.rssData[indexPath.row] as! RSSItem
+//
+//        self.navigationController?.pushViewController(vc, animated: false)
+//
+//
+//    }
     
 }
 

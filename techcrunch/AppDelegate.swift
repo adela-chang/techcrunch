@@ -17,7 +17,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
 
-        UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(UIApplicationBackgroundFetchIntervalMinimum)
+        //Attempt to fetch every 10min, but make sure that we don't violate the minimum fetch guidelines set by Apple (in case it's greater than 10min) otherwise the app might be blocked from fetching entirely
+        let backgroundFetchInterval = UIApplicationBackgroundFetchIntervalMinimum > 600 ? UIApplicationBackgroundFetchIntervalMinimum : 600
+        UIApplication.sharedApplication().setMinimumBackgroundFetchInterval(backgroundFetchInterval)
 
         // Override point for customization after application launch.
         return true

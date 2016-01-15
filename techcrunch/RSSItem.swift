@@ -14,5 +14,6 @@ class RSSItem: NSObject {
     var title: String = ""
     var desc: String = ""
     var date: NSDate = NSDate()
+    var img: UIImage = UIImage()
 
 }
