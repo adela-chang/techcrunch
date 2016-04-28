@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
@@ -14,19 +15,19 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="232"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" horizontalHuggingPriority="100" verticalHuggingPriority="100" horizontalCompressionResistancePriority="100" verticalCompressionResistancePriority="100" tableViewCell="btr-0f-UDU" id="8TB-Kb-8zN">
-                <rect key="frame" x="0.0" y="0.0" width="470" height="405"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="231"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" verticalCompressionResistancePriority="751" misplaced="YES" text="Title" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ywC-Se-RwW">
                         <rect key="frame" x="13" y="116" width="295" height="31"/>
                         <fontDescription key="fontDescription" name="Avenir-Heavy" family="Avenir" pointSize="22"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" misplaced="YES" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hlz-82-gCs">
                         <rect key="frame" x="13" y="157" width="295" height="24"/>
                         <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" misplaced="YES" text="4:00 pm | Jan 2, 2016" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2RC-I0-lOi">
@@ -92,6 +93,14 @@
                         <exclude reference="81M-R0-5qX"/>
                     </mask>
                     <mask key="constraints">
+                        <exclude reference="4SV-Hq-STq"/>
+                        <exclude reference="VQI-b1-JJo"/>
+                        <exclude reference="dQE-1Z-n7c"/>
+                        <exclude reference="qL2-pz-Ypm"/>
+                        <exclude reference="dLI-I4-bGa"/>
+                        <exclude reference="ttm-QM-Vv2"/>
+                        <exclude reference="10I-fL-ShW"/>
+                        <exclude reference="f7w-RS-aAJ"/>
                         <exclude reference="42d-Iu-hTO"/>
                         <exclude reference="5Wv-Ra-2WF"/>
                         <exclude reference="7wt-8J-wyB"/>
@@ -101,14 +110,6 @@
                         <exclude reference="gM9-2v-2AX"/>
                         <exclude reference="uaf-MU-Do0"/>
                         <exclude reference="vKd-HN-ub7"/>
-                        <exclude reference="4SV-Hq-STq"/>
-                        <exclude reference="VQI-b1-JJo"/>
-                        <exclude reference="dQE-1Z-n7c"/>
-                        <exclude reference="qL2-pz-Ypm"/>
-                        <exclude reference="dLI-I4-bGa"/>
-                        <exclude reference="ttm-QM-Vv2"/>
-                        <exclude reference="10I-fL-ShW"/>
-                        <exclude reference="f7w-RS-aAJ"/>
                     </mask>
                 </variation>
                 <variation key="widthClass=compact">
@@ -116,14 +117,14 @@
                         <include reference="81M-R0-5qX"/>
                     </mask>
                     <mask key="constraints">
-                        <include reference="42d-Iu-hTO"/>
-                        <include reference="5Wv-Ra-2WF"/>
-                        <include reference="Gba-2h-vn6"/>
-                        <include reference="uaf-MU-Do0"/>
                         <include reference="4SV-Hq-STq"/>
                         <include reference="dQE-1Z-n7c"/>
                         <include reference="ttm-QM-Vv2"/>
                         <include reference="10I-fL-ShW"/>
+                        <include reference="42d-Iu-hTO"/>
+                        <include reference="5Wv-Ra-2WF"/>
+                        <include reference="Gba-2h-vn6"/>
+                        <include reference="uaf-MU-Do0"/>
                     </mask>
                 </variation>
                 <variation key="widthClass=regular">
@@ -131,15 +132,15 @@
                         <include reference="81M-R0-5qX"/>
                     </mask>
                     <mask key="constraints">
+                        <include reference="VQI-b1-JJo"/>
+                        <include reference="qL2-pz-Ypm"/>
+                        <include reference="dLI-I4-bGa"/>
+                        <include reference="f7w-RS-aAJ"/>
                         <include reference="7wt-8J-wyB"/>
                         <include reference="VUI-eC-bnw"/>
                         <include reference="Xq2-hi-DII"/>
                         <include reference="gM9-2v-2AX"/>
                         <include reference="vKd-HN-ub7"/>
-                        <include reference="VQI-b1-JJo"/>
-                        <include reference="qL2-pz-Ypm"/>
-                        <include reference="dLI-I4-bGa"/>
-                        <include reference="f7w-RS-aAJ"/>
                     </mask>
                 </variation>
             </tableViewCellContentView>

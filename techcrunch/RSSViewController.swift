@@ -78,6 +78,8 @@ class RSSViewController: UIViewController, UITableViewDataSource, UITableViewDel
                     item.date = date
                     
                     item.img = UIImage(data: NSData(contentsOfURL:NSURL(string:imgURL)!)!)!
+                    
+                    NSLog("%@", imgURL)
 
                     //note: using substring bc techcrunch always has 1 extra space in front of its descriptions, and extraneous "Read More" text at the end
                     item.desc = desc.substringWithRange(Range<String.Index>(start: desc.startIndex.advancedBy(1), end: desc.endIndex.advancedBy(-9)))
